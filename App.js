@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -36,7 +36,7 @@ export default function App() {
   }
 
   const getUserInfo = async (token) => {
-    if (!token) return;
+    if (!token) return; // return null
     try {
       const response = await fetch(
         "https://www.googleapis.com/userinfo/v2/me",
@@ -56,11 +56,22 @@ export default function App() {
     <View style={styles.container}>
       <Text>{JSON.stringify(userInfo, null, 2)}</Text>
       <Text>Code with Basile!</Text>
-      <Button title="Sign in with Google" onPress={() => promptAsync()} />
+      {/* <Button title="Sign in with Google" onPress={() => promptAsync()} />
       <Button
-        title="delete local storage"
+        title="Delete local storage"
         onPress={() => AsyncStorage.removeItem("@user")}
-      />
+      /> */}
+
+      <TouchableOpacity onPress={() => promptAsync()} style={styles.buttontext}>
+        <Text style={{ color: "#fff" }}>Sign in with Google</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => AsyncStorage.removeItem("@user")}
+        style={styles.buttontext}
+      >
+        <Text style={{ color: "#fff" }}>Delete local storage</Text>
+      </TouchableOpacity>
+
       <StatusBar style="auto" />
     </View>
   );
@@ -72,5 +83,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  buttontext: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    backgroundColor: "#4285F4",
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 5,
   },
 });
